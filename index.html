@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1013">
+<title>PLYFORM / Objects start flat.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b1013;
+  --panel:#12191c;
+  --text:#f1f2e9;
+  --muted:#969f9d;
+  --line:rgba(232,240,230,.14);
+  --lime:#d8f58b;
+  --orange:#efae73;
+  --ease:cubic-bezier(.215,.61,.355,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:16px;-webkit-font-smoothing:antialiased}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit}
+button,a{touch-action:manipulation}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lime);outline-offset:5px}
+::selection{background:var(--lime);color:var(--bg)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3,.wordmark,.mono{font-family:"Space Grotesk",sans-serif}
+button{color:inherit}
+.shell{width:min(100% - 96px,1500px);margin-inline:auto}
+.small-label{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:600}
+.muted{color:var(--muted)}
+.header{height:84px;position:absolute;top:0;left:0;right:0;z-index:20}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:24px}
+.wordmark{font-weight:700;font-size:25px;letter-spacing:-1.6px;display:flex;align-items:center;gap:11px}
+.logo-mark{width:25px;height:25px;display:inline-block;position:relative;border:1px solid var(--lime);transform:rotate(-12deg)}
+.logo-mark:before,.logo-mark:after{content:"";position:absolute;border:1px solid var(--lime);inset:4px}
+.logo-mark:after{inset:8px}
+nav{display:flex;align-items:center;gap:34px;font-size:12px}
+nav a{color:#bcc3bd;transition:color .3s var(--ease)}
+nav a:hover{color:var(--lime)}
+.nav-tool{border:1px solid var(--line);padding:12px 17px;border-radius:50px;color:var(--text)}
+.arrow{margin-left:18px}
+.hero-track{height:270vh;position:relative}
+.hero{height:100svh;min-height:750px;position:sticky;top:0;overflow:hidden}
+.hero-grid{height:100%;position:relative;padding-top:84px}
+.hero-copy{position:absolute;top:177px;left:0;width:42%;z-index:3;pointer-events:none}
+.hero-copy a{pointer-events:auto}
+.eyebrow{display:flex;align-items:center;gap:10px;color:#d0d8c9}
+.dot{width:6px;height:6px;border-radius:100%;background:var(--lime);display:inline-block}
+h1{font-size:clamp(108px,12vw,184px);line-height:.85;letter-spacing:-.085em;font-weight:500;margin:31px 0 30px}
+.gradient{color:var(--lime);background:linear-gradient(110deg,#e1f5b1 8%,#d4ee8a 42%,#dfa986 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-description{max-width:305px;line-height:1.75;font-size:14px;color:#aeb8b4}
+.hero-actions{margin-top:16px;display:flex;gap:20px;align-items:center;position:relative;z-index:5}
+.button{display:inline-flex;justify-content:center;align-items:center;min-height:49px;gap:24px;border-radius:4px;border:1px solid transparent;padding:14px 21px;font-size:12px;font-weight:650;transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease)}
+.button-primary{background:var(--lime);color:#172018}
+.button-primary:hover{background:#e7ffb4}
+.button-outline{background:transparent;border-color:var(--line)}
+.button-outline:hover{border-color:var(--lime);color:var(--lime)}
+.text-link{font-size:12px;color:#c5cec5;border-bottom:1px solid #6b746b;padding-bottom:5px}
+.hero-stage{position:absolute;left:42%;top:177px;width:60%;max-width:960px;aspect-ratio:1}
+.hero-stage canvas,.hero-stage video{width:100%;height:100%;display:block;position:absolute;inset:0;object-fit:contain}
+.hero-stage video{opacity:0}
+.hero-stage.video-ready video{opacity:1}
+.hero-stage.video-ready canvas{opacity:0}
+.stage-index{position:absolute;right:1%;top:10%;z-index:2;color:#657570;font-size:10px;letter-spacing:.12em}
+.stage-tag{position:absolute;left:14%;top:17%;color:#858e84;font-size:10px;display:flex;align-items:center;gap:9px}
+.stage-tag:before{content:"";height:1px;width:32px;background:#647154}
+.glass{background:rgba(39,49,44,.37);border:1px solid rgba(224,235,207,.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.object-card{position:absolute;top:177px;right:2%;width:270px;padding:19px 21px;border-radius:8px;z-index:4}
+.object-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.object-card h3{font-size:19px;letter-spacing:-.5px;font-weight:500}
+.object-card .badge{font-size:9px;border:1px solid rgba(215,245,139,.3);padding:5px 7px;border-radius:3px;color:var(--lime);letter-spacing:.07em}
+.object-specs{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:13px;font-size:11px}
+.object-specs span{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}
+.hero-bottom{position:absolute;bottom:27px;left:0;right:0;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:30px;border-top:1px solid var(--line);padding-top:20px;font-size:10px;letter-spacing:.07em}
+.scroll-label{display:flex;align-items:center;gap:13px}
+.scroll-icon{width:16px;height:24px;border:1px solid #68716a;border-radius:10px;position:relative}
+.scroll-icon:after{content:"";position:absolute;top:5px;left:6px;width:2px;height:5px;background:var(--lime)}
+.timeline{display:flex;align-items:center;gap:12px;justify-content:center}
+.timeline span{white-space:nowrap;color:#a5afa1}
+.progress-track{height:2px;background:#333e31;width:120px}
+.progress-fill{height:100%;width:0;background:var(--lime)}
+.hero-bottom>div:last-child{text-align:right;color:#899585}
+.spacer{height:80vh;min-height:420px;display:flex;align-items:center;justify-content:center;position:relative}
+.spacer:before{content:"";position:absolute;top:12%;bottom:12%;left:50%;width:1px;background:linear-gradient(transparent,#34412f,transparent)}
+.spacer-note{position:relative;max-width:680px;padding:30px;text-align:center;background:var(--bg)}
+.spacer-note .small-label{color:var(--lime);display:block;margin-bottom:22px}
+.spacer-note p{font-family:"Space Grotesk",sans-serif;font-size:clamp(26px,3.5vw,49px);letter-spacing:-.055em;line-height:1.2;color:#bac3b5}
+.spacer-note p span{color:var(--text)}
+.section{padding-block:110px}
+.section-heading{display:flex;justify-content:space-between;gap:32px;align-items:flex-end;margin-bottom:48px}
+.section-heading .small-label{color:var(--lime);display:block;margin-bottom:22px}
+h2{font-size:clamp(42px,5.2vw,76px);line-height:1.03;letter-spacing:-.065em;font-weight:500}
+.section-summary{max-width:300px;font-size:13px;line-height:1.8;color:var(--muted)}
+.collection{border-top:1px solid var(--line)}
+.models{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.model-card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#11171a;transition:border-color .3s var(--ease)}
+.model-card:hover{border-color:rgba(216,245,139,.45)}
+.model-image{height:340px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#293029 0%,#151d1c 64%,#11171a 100%)}
+.model-image canvas{width:100%;height:100%;object-fit:contain}
+.model-no{position:absolute;top:20px;left:20px;font-size:10px;letter-spacing:.1em;color:#a0ab96}
+.model-type{position:absolute;top:18px;right:18px;padding:5px 8px;font-size:9px;border:1px solid #4b5445;border-radius:20px;color:#b9c4b0}
+.model-image svg{width:100%;height:100%;display:block}
+.model-info{padding:23px}
+.model-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.model-info h3{font-size:25px;font-weight:500;letter-spacing:-1px}
+.model-title-row>span{font-size:10px;color:#a7b299}
+.model-info p{font-size:12px;line-height:1.7;color:var(--muted)}
+.model-footer{margin-top:24px;border-top:1px solid var(--line);padding-top:17px;display:flex;align-items:center;justify-content:space-between}
+.model-footer span{font-size:10px;color:#a2aca0}
+.preview-button{border:0;background:transparent;font-size:11px;padding:6px 0 6px 12px;transition:color .3s var(--ease)}
+.preview-button:hover{color:var(--lime)}
+.collection-note{display:flex;gap:12px;align-items:flex-start;margin-top:22px;font-size:11px;line-height:1.6;color:#7f8b80}
+.collection-note i{font-style:normal;color:var(--lime)}
+.workshop{border-top:1px solid var(--line);background:linear-gradient(160deg,#121a17,var(--bg) 65%)}
+.workshop-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:start}
+.workshop-copy .small-label{color:var(--lime);display:block;margin-bottom:24px}
+.workshop-copy>p{font-size:14px;color:var(--muted);line-height:1.8;max-width:370px;margin-top:27px}
+.steps{margin-top:38px;max-width:375px}
+.step{display:flex;gap:18px;padding:18px 0;border-top:1px solid var(--line);align-items:baseline}
+.step-number{font-size:11px;color:var(--lime)}
+.step p{font-size:12px;color:#c4cbbf;line-height:1.6}
+.configurator{border-radius:12px;padding:30px;position:relative}
+.config-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:27px}
+.config-top h3{font-size:17px;font-weight:500}
+.live-label{font-size:9px;color:var(--lime);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.12em}
+.field-heading{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;font-size:11px}
+.field-heading output{font-family:"Space Grotesk",sans-serif;color:var(--lime);font-size:15px}
+.segmented{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:25px}
+.segmented button{background:rgba(7,13,10,.3);border:1px solid var(--line);border-radius:4px;padding:11px;font-size:12px;transition:background .3s var(--ease),border-color .3s var(--ease)}
+.segmented button[aria-pressed="true"]{background:rgba(216,245,139,.12);border-color:#a5c477;color:var(--lime)}
+input[type=range]{width:100%;height:4px;accent-color:var(--lime);cursor:pointer;display:block;margin:20px 0 14px}
+.range-captions{display:flex;justify-content:space-between;color:#889582;font-size:10px}
+.coupon-preview{margin-top:26px;padding:15px 0 0;border:1px solid var(--line);border-radius:6px;background:rgba(4,12,8,.45);overflow:hidden}
+.coupon-preview svg{width:100%;height:auto;display:block}
+.preview-caption{display:flex;justify-content:space-between;padding:9px 14px 12px;font-size:9px;letter-spacing:.06em;color:#849780}
+.config-note{font-size:11px;color:#9eac99;line-height:1.7;margin:17px 0 21px}
+.download-button{width:100%}
+.download-status{min-height:17px;font-size:10px;line-height:1.5;color:var(--lime);margin-top:10px}
+.bottom-section{padding:110px 0;border-top:1px solid var(--line)}
+.bottom-layout{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.bottom-layout h2{font-size:clamp(38px,5vw,70px)}
+.bottom-layout p{font-size:13px;color:var(--muted);line-height:1.8;max-width:310px;margin-top:20px}
+footer{border-top:1px solid var(--line)}
+.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:35px}
+.footer-note{font-size:10px;color:#85917f;text-align:right;line-height:1.8}
+dialog{width:min(570px,calc(100% - 32px));padding:36px;border:1px solid #536047;border-radius:12px;color:var(--text);background:#17201b;box-shadow:0 30px 130px #0008}
+dialog::backdrop{background:rgba(1,6,4,.8);backdrop-filter:blur(8px)}
+.dialog-close{position:absolute;right:17px;top:15px;width:32px;height:32px;background:transparent;border:1px solid var(--line);border-radius:50%;font-size:20px}
+dialog .small-label{display:block;color:var(--lime);margin:6px 0 25px}
+dialog h2{font-size:49px;margin-bottom:20px}
+dialog p{font-size:13px;line-height:1.85;color:#b3bead}
+.dialog-specs{display:grid;grid-template-columns:1fr 1fr;gap:20px;border-block:1px solid var(--line);padding:20px 0;margin:25px 0}
+.dialog-specs dt{color:#81917a;font-size:10px;margin-bottom:6px}
+.dialog-specs dd{margin:0;font-size:12px}
+.dialog-note{font-size:11px!important;margin-bottom:24px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(min-width:1600px){.hero-stage{top:177px;width:62%}.hero-copy{top:177px}}
+@media(max-width:1100px){
+ .shell{width:calc(100% - 56px)}
+ .hero{min-height:720px}
+ h1{font-size:clamp(100px,12.5vw,150px)}
+ .hero-copy{top:26%}
+ .hero-stage{top:20%;left:40%;width:65%}
+ .hero-actions{gap:14px;flex-wrap:wrap}
+ .object-card{right:6%;top:177px;width:230px}
+ .model-image{height:270px}
+ .workshop-grid{gap:35px}
+ .configurator{padding:23px}
+}
+@media(max-width:760px){
+ .shell{width:calc(100% - 36px)}
+ .header{height:70px}
+ .wordmark{font-size:21px}
+ nav{gap:18px}
+ nav .nav-secondary{display:none}
+ .nav-tool{padding:10px 13px}
+ .hero-track{height:240vh}
+ .hero{min-height:860px;height:100svh}
+ .hero-copy{top:110px;width:100%;position:absolute}
+ .hero-copy .eyebrow{font-size:9px}
+ h1{font-size:clamp(83px,20vw,143px);line-height:.9;margin:20px 0}
+ h1 br{display:none}
+ .hero-description{max-width:290px;font-size:12px;line-height:1.7}
+ .hero-actions{margin-top:18px}
+ .hero-actions .button{min-height:42px;padding:11px 16px;font-size:11px}
+ .text-link{font-size:11px}
+ .hero-stage{left:0;top:360px;width:100%;max-width:480px;margin:auto;right:0}
+ .stage-tag{top:10%;left:4%}
+ .stage-index{top:10%;right:4%}
+ .object-card{width:190px;padding:13px;bottom:2%;right:0}
+ .object-card-top{margin-bottom:10px}
+ .object-card h3{font-size:16px}
+ .object-card .badge{font-size:8px;padding:4px}
+ .object-specs{padding-top:9px;gap:8px;font-size:10px}
+ .hero-bottom{bottom:18px;grid-template-columns:1fr 1fr;padding-top:16px;gap:8px;font-size:9px}
+ .hero-bottom>div:last-child{display:none}
+ .timeline{justify-content:flex-end;gap:8px}
+ .progress-track{width:60px}
+ .section{padding-block:80px}
+ .section-heading{display:block;margin-bottom:32px}
+ .section-summary{margin-top:22px}
+ .models{grid-template-columns:1fr;gap:20px}
+ .model-image{height:330px}
+ .workshop-grid{grid-template-columns:1fr;gap:38px}
+ .workshop-copy>p{max-width:100%}
+ .steps{max-width:100%}
+ .configurator{padding:23px}
+ .spacer{min-height:380px}
+ .spacer-note{padding:24px 16px}
+ .bottom-section{padding:80px 0}
+ .bottom-layout{align-items:flex-start;flex-direction:column;gap:26px}
+ .footer-top{align-items:flex-start}
+ .footer-note{max-width:160px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*:before,*:after{transition:none!important}
+ .hero-track{height:auto}
+ .hero{position:relative}
+ .scroll-label .scroll-copy{font-size:0}
+ .scroll-label .scroll-copy:after{content:"STATIC OBJECT VIEW";font-size:9px}
+}
+
+.nav-dropdown{position:relative}
+.nav-dropdown .nav-tool{display:inline-flex;align-items:center;gap:8px}
+.nav-dropdown .arrow{margin-left:0;transition:transform .3s var(--ease)}
+.nav-dropdown:hover .arrow,.nav-dropdown:focus-within .arrow,.nav-dropdown.open .arrow{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;top:calc(100% + 14px);right:0;min-width:250px;background:rgba(18,25,28,.96);border:1px solid var(--line);border-radius:10px;padding:8px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;gap:2px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s}
+.nav-dropdown:hover .dropdown-menu,.nav-dropdown:focus-within .dropdown-menu,.nav-dropdown.open .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.dropdown-menu a{padding:11px 14px;border-radius:6px;font-size:13px;color:#c1c9bd;transition:background .2s var(--ease),color .2s var(--ease)}
+.dropdown-menu a:hover{background:rgba(216,245,139,.1);color:var(--lime)}
+.collections-bridge{border-top:1px solid var(--line);padding:110px 0}
+.collections-bridge .small-label{color:var(--lime);display:block;margin-bottom:22px}
+.collections-bridge h2{font-size:clamp(42px,5.2vw,76px);line-height:1.03;letter-spacing:-.065em;font-weight:500}
+.collections-bridge .lede{color:var(--muted);font-size:15px;line-height:1.8;max-width:520px;margin:18px 0 48px}
+.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.coll-card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#11171a;transition:border-color .3s var(--ease)}
+.coll-card:hover{border-color:rgba(216,245,139,.45)}
+.coll-card img{width:100%;aspect-ratio:1;object-fit:cover}
+.coll-card .body{padding:15px 16px 17px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.coll-card h3{font-size:15px;font-weight:500;letter-spacing:-.5px}
+.coll-card .cnt{font-size:10px;color:#a2aca0;white-space:nowrap}
+@media(max-width:760px){.collections-bridge{padding:80px 0}.coll-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}}
+
+/* --- overrides --- */
+.nav-dropdown .nav-tool{background:var(--lime);color:#0b1013;border-color:var(--lime);font-weight:650}
+.nav-dropdown .nav-tool:hover{background:#e7ffb4}
+.collections-bridge{border-top:1px solid var(--line)}
+.collections-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px 28px;margin-top:14px}
+.collections-list a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;color:#c1c9bd;transition:color .2s}
+.collections-list a:hover{color:var(--lime)}
+.collections-list a span:last-child{color:#7e8883;font-size:12px;white-space:nowrap}
+/* header: fixed + hide on scroll down */
+.header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(11,16,19,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .35s var(--ease)}
+.header.hide-on-scroll{transform:translateY(-100%)}
+.header .nav-scrim{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:35;opacity:0;visibility:hidden;transition:opacity .3s}
+.header .nav-scrim.show{opacity:1;visibility:visible}
+/* burger */
+.burger{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:transparent;position:relative;align-items:center;justify-content:center;flex:0 0 auto}
+.burger span,.burger span:before,.burger span:after{content:"";position:absolute;left:50%;width:18px;height:2px;background:var(--text);transform:translateX(-50%);transition:transform .3s var(--ease),opacity .2s}
+.burger span{top:50%;transform:translate(-50%,-50%)}
+.burger span:before{top:-6px}.burger span:after{top:6px}
+.burger.open span{background:transparent}
+.burger.open span:before{top:0;transform:translateX(-50%) rotate(45deg)}
+.burger.open span:after{top:0;transform:translateX(-50%) rotate(-45deg)}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(86vw,360px);background:var(--panel);border-left:1px solid var(--line);z-index:60;transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column;padding:24px;gap:6px;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer a{display:block;padding:14px 8px;border-bottom:1px solid var(--line);font-size:16px;color:#d4dcd2}
+.drawer a:hover{color:var(--lime)}
+.drawer .drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:55;opacity:0;visibility:hidden;transition:opacity .3s}
+.scrim.open{opacity:1;visibility:visible}
+@media(max-width:760px){
+ nav.top-links{display:none!important}
+ .burger{display:inline-flex}
+}
+
+/* --- mega menu (ported mechanics) --- */
+.nav-item{position:relative;display:inline-flex;align-items:center}
+.nav-link{border:0;background:transparent;color:#bcc3bd;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:7px;padding:11px 15px;border-radius:50px;transition:color .25s var(--ease),background .25s var(--ease);font-family:"DM Sans",sans-serif}
+.nav-link:hover{color:var(--lime)}
+.nav-item.is-open .nav-link{color:var(--lime)}
+.nav-link svg{width:13px;height:13px;transition:transform .3s var(--ease)}
+.nav-item.is-open .nav-link svg{transform:rotate(180deg)}
+.nav-count{font-size:10px;color:#7e8883;border:1px solid var(--line);border-radius:20px;padding:1px 7px}
+.nav-count.tnum{font-variant-numeric:tabular-nums}
+.mega{position:relative;z-index:45;overflow:hidden;max-height:0;opacity:0;transition:max-height .42s var(--ease),opacity .3s var(--ease);border-top:1px solid transparent}
+.header.mega-open .mega{max-height:560px;opacity:1;border-top-color:var(--line)}
+.mega-inner{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:38px;padding:34px 24px 40px;max-width:1500px;margin-inline:auto}
+.mega-col-head{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#7e8883;margin-bottom:16px}
+.mega-link{display:flex;align-items:center;gap:14px;padding:11px 12px;border-radius:8px;transition:background .2s var(--ease)}
+.mega-link:hover{background:rgba(216,245,139,.07)}
+.mega-link-code{font-size:10px;color:var(--lime);border:1px solid rgba(216,245,139,.3);border-radius:5px;padding:5px 7px;min-width:44px;text-align:center;font-family:"Space Grotesk",sans-serif}
+.mega-link-body{display:flex;flex-direction:column;line-height:1.25}
+.mega-link-body b{font-size:15px;font-weight:500}
+.mega-link-body span{font-size:11px;color:#8a958a}
+.mega-aside{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin-right:8px}
+.mega-aside-title{font-size:12px;color:var(--lime);font-weight:600;margin-bottom:10px}
+.mega-aside p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.mega-aside a{color:var(--lime);font-size:13px;font-weight:600}
+.nav-scrim{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:35;opacity:0;visibility:hidden;transition:opacity .3s}
+.nav-scrim.show{opacity:1;visibility:visible}
+.drawer-group{margin-bottom:8px}
+.drawer-close{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:transparent;position:relative}
+.drawer-close:before,.drawer-close:after{content:"";position:absolute;left:11px;top:20px;width:18px;height:2px;background:var(--text)}
+.drawer-close:before{transform:rotate(45deg)}.drawer-close:after{transform:rotate(-45deg)}
+@media(max-width:760px){.nav-item{display:none}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="shell header-inner">
+    <a href="#" class="wordmark" aria-label="PLYFORM home"><span class="logo-mark" aria-hidden="true"></span>PLYFORM</a>
+    <nav class="top-links" aria-label="Main navigation"><a href="#collection">The models</a><a class="nav-secondary" href="#process">How it fits</a><div class="nav-item"><button class="nav-link" type="button" data-mega-trigger aria-expanded="false" aria-controls="megaCollections">All collections <span class="nav-count tnum">218</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><a class="nav-tool" href="#fit-tool">Try the fit tool <span class="arrow">&#8599;</span></a></nav>
+    <button class="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+<div class="mega" id="megaCollections"><div class="mega-inner"><div class="mega-col"><span class="mega-col-head">Seasonal &amp; gifts</span><a class="mega-link" href="christmas.html"><span class="mega-link-code">XMAS</span><span class="mega-link-body"><b>Christmas &amp; Holiday</b><span>34 designs</span></span></a><a class="mega-link" href="halloween.html"><span class="mega-link-code">HALLOWEEN</span><span class="mega-link-body"><b>Halloween</b><span>27 designs</span></span></a><a class="mega-link" href="fall.html"><span class="mega-link-code">FALL</span><span class="mega-link-body"><b>Fall &amp; Autumn</b><span>15 designs</span></span></a><a class="mega-link" href="wedding.html"><span class="mega-link-code">WEDDING</span><span class="mega-link-body"><b>Wedding</b><span>5 designs</span></span></a><a class="mega-link" href="baby.html"><span class="mega-link-code">BABY</span><span class="mega-link-body"><b>Baby &amp; Kids</b><span>13 designs</span></span></a><a class="mega-link" href="paper.html"><span class="mega-link-code">PAPER</span><span class="mega-link-body"><b>Bookmarks, Frames &amp; Stationery</b><span>9 designs</span></span></a></div><div class="mega-col"><span class="mega-col-head">Home, decor &amp; craft</span><a class="mega-link" href="jewelry.html"><span class="mega-link-code">JEWELRY</span><span class="mega-link-body"><b>Earrings, Keychains &amp; Jewelry</b><span>16 designs</span></span></a><a class="mega-link" href="lighting.html"><span class="mega-link-code">LIGHT</span><span class="mega-link-body"><b>Lamps, Lanterns &amp; Candle Holders</b><span>9 designs</span></span></a><a class="mega-link" href="decor.html"><span class="mega-link-code">DECOR</span><span class="mega-link-body"><b>Wall Art &amp; Home Decor</b><span>29 designs</span></span></a><a class="mega-link" href="boxes.html"><span class="mega-link-code">BOXES</span><span class="mega-link-body"><b>Boxes &amp; Gift Packaging</b><span>18 designs</span></span></a><a class="mega-link" href="toys.html"><span class="mega-link-code">TOYS</span><span class="mega-link-body"><b>Toys, Games &amp; Miniatures</b><span>23 designs</span></span></a><a class="mega-link" href="stands.html"><span class="mega-link-code">STANDS</span><span class="mega-link-body"><b>Display Stands &amp; Organizers</b><span>20 designs</span></span></a></div><div class="mega-col"><div class="mega-aside"><p class="mega-aside-title">Browse all</p><p>Every design links out to Creative Fabrica with a commercial licence. Search the full set, or jump into a collection.</p><a href="models.html">All 218 models &#8599;</a></div></div></div></div>
+</header><div class="nav-scrim"></div><aside class="drawer" aria-label="All pages"><div class="drawer-head"><span class="wordmark"><span class="logo-mark" aria-hidden="true"></span>PLYFORM</span><button class="drawer-close" type="button" aria-label="Close menu"></button></div><div class="drawer-group"><span class="mega-col-head">This site</span><a href="index.html">Home</a><a href="models.html">All models (search)</a></div><div class="drawer-group"><span class="mega-col-head">Collections</span><a href="christmas.html">Christmas &amp; Holiday <span>34</span></a><a href="halloween.html">Halloween <span>27</span></a><a href="fall.html">Fall &amp; Autumn <span>15</span></a><a href="wedding.html">Wedding <span>5</span></a><a href="baby.html">Baby &amp; Kids <span>13</span></a><a href="jewelry.html">Earrings, Keychains &amp; Jewelry <span>16</span></a><a href="lighting.html">Lamps, Lanterns &amp; Candle Holders <span>9</span></a><a href="decor.html">Wall Art &amp; Home Decor <span>29</span></a><a href="boxes.html">Boxes &amp; Gift Packaging <span>18</span></a><a href="toys.html">Toys, Games &amp; Miniatures <span>23</span></a><a href="stands.html">Display Stands &amp; Organizers <span>20</span></a><a href="paper.html">Bookmarks, Frames &amp; Stationery <span>9</span></a></div></aside>
+
+<main>
+<section class="hero-track" id="top" aria-labelledby="hero-title">
+  <div class="hero">
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow small-label"><span class="dot"></span>Digital models / Physical possibilities</div>
+        <h1 id="hero-title">Make<br><span class="gradient">light.</span></h1>
+        <p class="hero-description">A flat sheet. A clean cut. Something worth making. Explore laser-cut objects, built around the beauty of their parts.</p>
+        <div class="hero-actions">
+          <a href="models.html" class="button button-primary">Explore the models <span>↗</span></a>
+          <a href="#fit-tool" class="text-link">Check your material</a>
+        </div>
+      </div>
+
+      <div class="hero-stage" id="hero-stage">
+        <canvas id="hero-canvas" width="960" height="960" role="img" aria-label="Original visualization of a plywood ribbed lampshade, separating into its individual parts as you scroll."></canvas>
+        <video id="scrub-video" width="960" height="960" muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+        <div class="stage-tag small-label">Exploded view / Orbit</div>
+        <div class="stage-index">FIG. 001</div>
+        <div class="object-card glass">
+          <div class="object-card-top">
+            <h3>Orbit shade</h3>
+            <span class="badge">MODEL STUDY</span>
+          </div>
+          <div class="object-specs">
+            <div><span>Material</span>Birch plywood</div>
+            <div><span>Construction</span>24 radial ribs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="scroll-label"><span class="scroll-icon" aria-hidden="true"></span><span class="scroll-copy">SCROLL TO TAKE IT APART</span></div>
+        <div class="timeline"><span>ASSEMBLED</span><div class="progress-track"><div class="progress-fill" id="scrub-progress"></div></div><span>EXPLODED</span></div>
+        <div>DESIGNED IN LAYERS / MADE BY YOU</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="spacer" aria-hidden="true">
+  <div class="spacer-note">
+    <span class="small-label">Less sheet. More shape.</span>
+    <p>The interesting part isn't the cut.<br>It's <span>what comes together.</span></p>
+  </div>
+</div>
+
+<section id="collection" class="section collection">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <span class="small-label">01 / The model shelf</span>
+        <h2>Flat is just<br>the beginning.</h2>
+      </div>
+      <p class="section-summary">Three original object studies. Look at the construction, find your next project, and test the fit before committing a sheet.</p>
+    </div>
+
+    <div class="models">
+      <article class="model-card">
+        <div class="model-image">
+          <canvas id="shelf-lamp" width="720" height="620" role="img" aria-label="Orbit radial plywood lampshade"></canvas>
+          <span class="model-no">01 / ORBIT</span><span class="model-type">LIGHTING</span>
+        </div>
+        <div class="model-info">
+          <div class="model-title-row"><h3>Orbit</h3><span>01</span></div>
+          <p>A curved silhouette, made from straight thinking.</p>
+          <div class="model-footer"><span>24 ribs / 3 mm plywood</span><button class="preview-button" data-model="orbit">View study ↗</button></div>
+        </div>
+      </article>
+
+      <article class="model-card">
+        <div class="model-image">
+          <span class="model-no">02 / SPAN</span><span class="model-type">DESK</span>
+          <svg viewBox="0 0 440 340" role="img" aria-label="Original illustration of an interlocking plywood reading stand">
+            <defs>
+              <linearGradient id="spanWood" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#d7b37e"/><stop offset="1" stop-color="#8b6037"/>
+              </linearGradient>
+              <linearGradient id="spanTop" x2=".3" y2="1">
+                <stop stop-color="#ead0a0"/><stop offset="1" stop-color="#b9874f"/>
+              </linearGradient>
+              <radialGradient id="spanShadow"><stop stop-color="#000" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+            </defs>
+            <ellipse cx="224" cy="266" rx="158" ry="36" fill="url(#spanShadow)"/>
+            <path d="M102 231 174 115 194 122 164 174 190 255 171 263 145 202 122 243Z" fill="#684727" stroke="#3e2c1c" stroke-width="2"/>
+            <path d="M109 226 179 110 198 117 169 171 196 250 178 257 152 197 129 238Z" fill="url(#spanWood)" stroke="#d2a66d"/>
+            <path d="M256 247 318 137 336 144 313 189 336 266 318 273 291 219 275 254Z" fill="#694927"/>
+            <path d="M262 241 324 131 342 138 319 183 342 260 324 267 298 213 281 248Z" fill="url(#spanWood)" stroke="#d0a270"/>
+            <path d="M95 205 180 107 347 140 264 239Z" fill="#68472d"/>
+            <path d="M95 198 180 100 347 133 264 232Z" fill="url(#spanTop)" stroke="#e0bb89" stroke-width="1.3"/>
+            <path d="M110 199 186 113M136 205 210 117M163 211 236 124M190 216 263 130M218 221 291 136M244 226 319 143" stroke="#8b653d" opacity=".19"/>
+            <path d="M99 196 265 229 265 247 99 213Z" fill="#9c6e42" stroke="#d3a46d"/>
+            <path d="M99 196 104 191 271 224 265 229Z" fill="#ebc38b"/>
+            <path d="M153 179 165 182M291 159 304 162" stroke="#644326" stroke-width="4"/>
+          </svg>
+        </div>
+        <div class="model-info">
+          <div class="model-title-row"><h3>Span</h3><span>02</span></div>
+          <p>A little lift for the book you keep coming back to.</p>
+          <div class="model-footer"><span>4 parts / 6 mm plywood</span><button class="preview-button" data-model="span">View study ↗</button></div>
+        </div>
+      </article>
+
+      <article class="model-card">
+        <div class="model-image">
+          <span class="model-no">03 / TIDE</span><span class="model-type">ORGANIZATION</span>
+          <svg viewBox="0 0 440 340" role="img" aria-label="Original illustration of a layered plywood desk tray">
+            <defs>
+              <linearGradient id="tideWood" x2=".6" y2="1"><stop stop-color="#d7b183"/><stop offset="1" stop-color="#997147"/></linearGradient>
+              <linearGradient id="tideInside" x2="0" y2="1"><stop stop-color="#61442d"/><stop offset="1" stop-color="#ab7f51"/></linearGradient>
+              <radialGradient id="tideShadow"><stop stop-color="#000" stop-opacity=".65"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+            </defs>
+            <ellipse cx="220" cy="263" rx="174" ry="40" fill="url(#tideShadow)"/>
+            <path d="M70 194Q60 177 86 164L232 110Q244 106 263 113L366 163Q388 176 367 190L237 268Q220 277 202 270L79 221Q68 217 70 194" fill="#825a37"/>
+            <path d="M75 214 204 264Q219 271 236 261L373 183M71 207 204 257Q220 264 236 254L377 176M70 200 204 250Q220 257 236 247L377 169" fill="none" stroke="#463522" stroke-width="2"/>
+            <path d="M78 163 229 107Q244 101 261 109L367 157Q386 168 367 181L236 258Q221 266 204 259L78 210Q53 193 78 163" fill="url(#tideWood)" stroke="#d5ad7a"/>
+            <path d="M98 174 233 124Q244 120 255 126L347 166Q358 173 347 181L231 247Q221 251 210 247L97 204Q75 194 98 174" fill="url(#tideInside)" stroke="#815a37" stroke-width="2"/>
+            <path d="M99 191 233 143Q244 139 255 145L336 180 231 241Q222 246 210 241Z" fill="#ba9364"/>
+            <path d="M176 152 197 144 295 188 277 199Z" fill="#e0bb88"/>
+            <path d="M176 152 176 178 277 221 277 199Z" fill="#9b7248"/>
+            <path d="M108 196 207 234M125 190 224 230M145 184 238 222" stroke="#855d3b" opacity=".18"/>
+            <path d="M274 155 308 169" stroke="#333f35" stroke-width="7" stroke-linecap="round"/>
+            <path d="M268 162 302 177" stroke="#d7e6ba" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="model-info">
+          <div class="model-title-row"><h3>Tide</h3><span>03</span></div>
+          <p>A place for the small things that wander.</p>
+          <div class="model-footer"><span>Layered assembly / 4 mm plywood</span><button class="preview-button" data-model="tide">View study ↗</button></div>
+        </div>
+      </article>
+    </div>
+    <p class="collection-note"><i>↳</i> These are design previews, not production-tested cutting plans. The fit-test SVG below is the downloadable file available on this page.</p>
+  </div>
+</section>
+
+<div class="spacer" id="process">
+  <div class="spacer-note">
+    <span class="small-label">Measure first / Make second</span>
+    <p>“3 mm plywood” is a label.<br><span>A good fit is a measurement.</span></p>
+  </div>
+</div>
+
+<section class="section workshop" id="fit-tool">
+  <div class="shell workshop-grid">
+    <div class="workshop-copy">
+      <span class="small-label">02 / A small test. A better fit.</span>
+      <h2>Your material.<br><span class="gradient">Your tolerance.</span></h2>
+      <p>A laser removes a little material with every cut. Set your sheet thickness and estimated kerf, then cut a five-slot sample before making the whole object.</p>
+      <div class="steps">
+        <div class="step"><span class="step-number">01</span><p>Measure your sheet with calipers. Nominal thickness is only a starting point.</p></div>
+        <div class="step"><span class="step-number">02</span><p>Download the test. Import it in millimeters, at 100% scale.</p></div>
+        <div class="step"><span class="step-number">03</span><p>Try a scrap edge in each slot. Keep the fit that works for your material.</p></div>
+      </div>
+    </div>
+
+    <div class="configurator glass">
+      <div class="config-top">
+        <h3>Fit lab</h3>
+        <span class="live-label"><span class="dot"></span>Interactive</span>
+      </div>
+      <div class="field-heading"><span id="thickness-label">Nominal sheet thickness</span><output id="thickness-output">3 mm</output></div>
+      <div class="segmented" role="group" aria-labelledby="thickness-label">
+        <button type="button" data-thickness="3" aria-pressed="true">3 mm</button>
+        <button type="button" data-thickness="4" aria-pressed="false">4 mm</button>
+        <button type="button" data-thickness="6" aria-pressed="false">6 mm</button>
+      </div>
+      <div class="field-heading">
+        <label for="kerf">Estimated laser kerf</label>
+        <output id="kerf-output" for="kerf">0.15 mm</output>
+      </div>
+      <input id="kerf" type="range" min="0" max="0.30" step="0.01" value="0.15" aria-describedby="kerf-help">
+      <div class="range-captions"><span>0.00 mm</span><span>0.30 mm</span></div>
+
+      <div class="coupon-preview">
+        <svg id="coupon-svg" viewBox="-5 -8 110 62" role="img" aria-label="Five-slot fit test preview"></svg>
+        <div class="preview-caption"><span>FIVE FITS / ONE SMALL SCRAP</span><span>100 × 45 MM</span></div>
+      </div>
+      <p class="config-note" id="kerf-help">Slot paths compensate for kerf. Test offsets run from −0.10 to +0.10 mm around your selected thickness. No extra software kerf compensation is needed.</p>
+      <button class="button button-primary download-button" id="download-svg">Download fit-test SVG <span>↓</span></button>
+      <p class="download-status" id="download-status" role="status" aria-live="polite">Free test file / Millimeter units / No account</p>
+    </div>
+  </div>
+</section>
+
+<section class="bottom-section">
+  <div class="shell bottom-layout">
+    <div>
+      <h2>Start with a scrap.<br>See where it goes.</h2>
+      <p>The first useful thing you make can be the test that saves your next sheet.</p>
+    </div>
+    <a href="#fit-tool" class="button button-outline">Make your fit test <span>↗</span></a>
+  </div>
+</section>
+</main>
+
+<section class="collections-bridge">
+  <div class="shell">
+    <span class="small-label">All collections</span>
+    <h2>Laser-cut<br>ready to make.</h2>
+    <p class="lede">Every model above is a study. Below are the real cutting files — 218 designs across 12 collections, each linking out to Creative Fabrica with a commercial licence.</p>
+    <div class="collections-list"><a href="christmas.html"><span>Christmas &amp; Holiday</span><span>34</span></a><a href="halloween.html"><span>Halloween</span><span>27</span></a><a href="fall.html"><span>Fall &amp; Autumn</span><span>15</span></a><a href="wedding.html"><span>Wedding</span><span>5</span></a><a href="baby.html"><span>Baby &amp; Kids</span><span>13</span></a><a href="jewelry.html"><span>Earrings, Keychains &amp; Jewelry</span><span>16</span></a><a href="lighting.html"><span>Lamps, Lanterns &amp; Candle Holders</span><span>9</span></a><a href="decor.html"><span>Wall Art &amp; Home Decor</span><span>29</span></a><a href="boxes.html"><span>Boxes &amp; Gift Packaging</span><span>18</span></a><a href="toys.html"><span>Toys, Games &amp; Miniatures</span><span>23</span></a><a href="stands.html"><span>Display Stands &amp; Organizers</span><span>20</span></a><a href="paper.html"><span>Bookmarks, Frames &amp; Stationery</span><span>9</span></a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="shell footer-top">
+    <a href="#" class="wordmark"><span class="logo-mark" aria-hidden="true"></span>PLYFORM</a>
+    <p class="footer-note">Original objects / Digital beginnings<br>Model studies & a free SVG fit tool<br><a class="footer-link" href="privacy.html">Privacy &amp; affiliate disclosure</a></p>
+  </div>
+</footer>
+
+<dialog id="model-dialog" aria-labelledby="dialog-title">
+  <button class="dialog-close" aria-label="Close model details">×</button>
+  <span class="small-label" id="dialog-category"></span>
+  <h2 id="dialog-title"></h2>
+  <p id="dialog-description"></p>
+  <dl class="dialog-specs" id="dialog-specs"></dl>
+  <p class="dialog-note">Concept preview only. A production cutting file is not available here. Start by testing your material with the free fit coupon.</p>
+  <button class="button button-primary" id="dialog-tool">Open the fit tool <span>↗</span></button>
+</dialog>
+
+<script>
+(() => {
+  "use strict";
+
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const canvas = document.getElementById("hero-canvas");
+  const ctx = canvas.getContext("2d");
+  const video = document.getElementById("scrub-video");
+  const stage = document.getElementById("hero-stage");
+  const track = document.querySelector(".hero-track");
+  const progressBar = document.getElementById("scrub-progress");
+
+  let progress = 0;
+  let videoReady = false;
+  let scrollQueued = false;
+  let videoURL = null;
+  let lastCanvasFrame = -1;
+  let videoDuration = 2.95;
+
+  const FRAME_COUNT = 72;
+  const FPS = 24;
+
+  /*
+    Original material, drawn in this file.
+    The same 72 frames are encoded into a local video when supported.
+    No stock footage, image requests or pre-existing 3D assets.
+  */
+  function drawOrbit(context, width, height, amount, shelf = false) {
+    context.clearRect(0, 0, width, height);
+    const size = Math.min(width, height);
+    const cx = width * .50;
+    const cy = height * (shelf ? .48 : .46);
+    const unit = size * (shelf ? .235 : .218);
+    const explode = Math.pow(clamp((amount - .13) / .87, 0, 1), 1.12);
+    const turn = -.36 + amount * 1.2;
+
+    if (!shelf) {
+      context.fillStyle = "#0b1013";
+      context.fillRect(0, 0, width, height);
+      const bg = context.createRadialGradient(cx,cy,0,cx,cy,size*.52);
+      bg.addColorStop(0,"rgba(63,75,44,.22)");
+      bg.addColorStop(.6,"rgba(30,45,32,.09)");
+      bg.addColorStop(1,"rgba(11,16,19,0)");
+      context.fillStyle = bg;
+      context.fillRect(0,0,width,height);
+    }
+
+    const shadow = context.createRadialGradient(cx,cy+unit*1.63,0,cx,cy+unit*1.63,unit*1.42);
+    shadow.addColorStop(0,"rgba(0,0,0,.60)");
+    shadow.addColorStop(1,"rgba(0,0,0,0)");
+    context.save();
+    context.translate(cx,cy+unit*1.63);
+    context.scale(1,.21);
+    context.fillStyle = shadow;
+    // Use a local shadow gradient after transforming.
+    const localShadow = context.createRadialGradient(0,0,0,0,0,unit*1.55);
+    localShadow.addColorStop(0,"rgba(0,0,0,.6)");
+    localShadow.addColorStop(1,"rgba(0,0,0,0)");
+    context.fillStyle=localShadow;
+    context.beginPath();
+    context.arc(0,0,unit*1.55,0,Math.PI*2);
+    context.fill();
+    context.restore();
+
+    function project(x,y,z) {
+      const rx = x*Math.cos(turn)+z*Math.sin(turn);
+      const rz = -x*Math.sin(turn)+z*Math.cos(turn);
+      const yy = y*.96-rz*.28;
+      const zz = y*.28+rz*.96;
+      const perspective=5.7/(5.7-zz);
+      return {x:cx+rx*unit*perspective,y:cy+yy*unit*perspective,z:zz};
+    }
+    function path(points) {
+      context.beginPath();
+      points.forEach((p,i) => i ? context.lineTo(p.x,p.y) : context.moveTo(p.x,p.y));
+      context.closePath();
+    }
+    function radius(t) {
+      return .18 + .91*Math.pow(Math.sin(Math.PI*t),.72);
+    }
+    function rib(angle) {
+      const outer=[],inner=[],back=[];
+      const shift=explode*.57;
+      for(let j=0;j<=44;j++){
+        const t=j/44, r=radius(t)+shift, y=(t-.5)*2.38;
+        outer.push(project(Math.cos(angle)*r,y,Math.sin(angle)*r));
+        const ri=Math.max(.075,radius(t)-.22)+shift;
+        inner.push(project(Math.cos(angle)*ri,y,Math.sin(angle)*ri));
+      }
+      const face=outer.concat(inner.reverse());
+      for(const p of face)back.push({x:p.x+size*.0045,y:p.y+size*.0028});
+      return {angle,face,back,depth:project(Math.cos(angle),0,Math.sin(angle)).z};
+    }
+    function paintRib(r) {
+      path(r.back);
+      context.fillStyle="#64452c";
+      context.fill();
+      context.strokeStyle="#493823";
+      context.lineWidth=.7;
+      context.stroke();
+
+      const illumination=.5+.5*Math.cos(r.angle+turn+1.0);
+      const grad=context.createLinearGradient(cx-unit,cy-unit,cx+unit,cy+unit);
+      grad.addColorStop(0,`rgb(${Math.round(158+65*illumination)},${Math.round(118+62*illumination)},${Math.round( seventy(illumination))})`);
+      grad.addColorStop(.46,`rgb(${Math.round(179+43*illumination)},${Math.round(135+49*illumination)},${Math.round(85+43*illumination)})`);
+      grad.addColorStop(1,`rgb(${Math.round(113+48*illumination)},${Math.round(78+44*illumination)},${Math.round(46+27*illumination)})`);
+      path(r.face);
+      context.fillStyle=grad;
+      context.fill();
+      context.strokeStyle="rgba(236,198,139,.58)";
+      context.lineWidth=shelf?.75:1;
+      context.stroke();
+
+      context.save();
+      path(r.face);
+      context.clip();
+      context.strokeStyle="rgba(78,46,23,.13)";
+      context.lineWidth=.65;
+      for(let g=0;g<5;g++){
+        const rr=.65+g*.11+explode*.57;
+        const points=[];
+        for(let k=0;k<=24;k++){
+          const t=k/24;
+          points.push(project(Math.cos(r.angle)*(rr+.06*Math.sin(t*9+g)),(t-.5)*2.38,Math.sin(r.angle)*rr));
+        }
+        context.beginPath();
+        points.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));
+        context.stroke();
+      }
+      context.restore();
+    }
+function seventy(n) {
+  return 72 + 53 * n;
+}
+
+    // Sorted surfaces give a convincing radial assembly without a 3D library.
+    const ribs=Array.from({length:24},(_,i)=>rib(i*Math.PI*2/24));
+    ribs.sort((a,b)=>a.depth-b.depth);
+    ribs.filter(r=>r.depth<0).forEach(paintRib);
+
+    // Warm, abstract light core. This is a visual study, not an electrical plan.
+    const core=project(0,0,0);
+    context.save();
+    const glow=context.createRadialGradient(core.x,core.y,0,core.x,core.y,unit*.8);
+    glow.addColorStop(0,`rgba(250,197,100,${.22*(1-explode*.65)})`);
+    glow.addColorStop(1,"rgba(250,197,100,0)");
+    context.fillStyle=glow;
+    context.fillRect(core.x-unit,core.y-unit,unit*2,unit*2);
+    const bulb=context.createLinearGradient(core.x-unit*.12,core.y,core.x+unit*.12,core.y);
+    bulb.addColorStop(0,"#80663d");
+    bulb.addColorStop(.45,"#efd19a");
+    bulb.addColorStop(1,"#b99a5f");
+    context.fillStyle=bulb;
+    context.beginPath();
+    context.ellipse(core.x,core.y,unit*.095,unit*.47,0,0,Math.PI*2);
+    context.fill();
+    context.restore();
+
+    ribs.filter(r=>r.depth>=0).forEach(paintRib);
+
+    function collar(y, r) {
+      const outer=[],inner=[];
+      for(let i=0;i<=90;i++){
+        const a=i/90*Math.PI*2;
+        outer.push(project(Math.cos(a)*r,y,Math.sin(a)*r));
+        inner.push(project(Math.cos(-a)*r*.53,y,Math.sin(-a)*r*.53));
+      }
+      context.beginPath();
+      outer.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));
+      context.closePath();
+      inner.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));
+      context.closePath();
+      context.fillStyle="#c6a06b";
+      context.fill("evenodd");
+      context.strokeStyle="#ecce95";
+      context.lineWidth=.8;
+      context.stroke();
+    }
+    collar(-1.15-explode*.43,.255);
+    collar(1.15+explode*.35,.235);
+
+    // Fine construction guides appear only through the scrubbed sequence.
+    if(explode>.2&&!shelf){
+      context.save();
+      context.globalAlpha=(explode-.2)*.28;
+      context.strokeStyle="#c7d8ad";
+      context.lineWidth=1;
+      context.setLineDash([4,9]);
+      const top=project(0,-1.95,0),bottom=project(0,1.95,0);
+      context.beginPath();context.moveTo(top.x,top.y);context.lineTo(bottom.x,bottom.y);context.stroke();
+      context.restore();
+    }
+  }
+
+  drawOrbit(ctx,960,960,0);
+  const shelf=document.getElementById("shelf-lamp");
+  drawOrbit(shelf.getContext("2d"),720,620,.05,true);
+
+function updateScroll() {
+  scrollQueued = false;
+
+  const hero = track.querySelector(".hero");
+  const rect = track.getBoundingClientRect();
+  const travel = Math.max(1, track.offsetHeight - hero.offsetHeight);
+
+  progress = reducedMotion.matches
+    ? 0
+    : clamp(-rect.top / travel, 0, 1);
+
+  const frame = Math.round(progress * (FRAME_COUNT - 1));
+
+  progressBar.style.width = `${progress * 100}%`;
+
+  // No video decoding, recording or asynchronous seeking.
+  // Redraw only when scrolling reaches a different frame.
+  if (frame === lastCanvasFrame) return;
+
+  lastCanvasFrame = frame;
+
+  drawOrbit(
+    ctx,
+    canvas.width,
+    canvas.height,
+    frame / (FRAME_COUNT - 1)
+  );
+}
+  function queueScroll(){
+    if(!scrollQueued){scrollQueued=true;requestAnimationFrame(updateScroll)}
+  }
+  window.addEventListener("scroll",queueScroll,{passive:true});
+  window.addEventListener("resize",queueScroll);
+  video.addEventListener("seeked",()=>{
+    if(videoReady)queueScroll();
+  });
+  reducedMotion.addEventListener("change",()=>{
+    if(reducedMotion.matches){
+      stage.classList.remove("video-ready");
+      drawOrbit(ctx,960,960,0);
+      lastCanvasFrame=0;
+    }else if(videoReady)stage.classList.add("video-ready");
+    queueScroll();
+  });
+  updateScroll();
+
+  async function buildLocalVideo(){
+    if(reducedMotion.matches||!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream)return;
+
+    const mimeTypes=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm","video/mp4"];
+    const mime=mimeTypes.find(type=>MediaRecorder.isTypeSupported(type));
+    if(!mime)return;
+
+    const source=document.createElement("canvas");
+    source.width=960;
+    source.height=960;
+    const sourceCtx=source.getContext("2d");
+    drawOrbit(sourceCtx,960,960,0);
+
+    let stream,recorder;
+    try{
+      stream=source.captureStream(FPS);
+      recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6500000});
+    }catch(error){
+      if(stream)stream.getTracks().forEach(t=>t.stop());
+      return;
+    }
+
+    const chunks=[];
+    recorder.addEventListener("dataavailable",event=>{
+      if(event.data.size)chunks.push(event.data);
+    });
+    recorder.addEventListener("error",()=>{
+      stream.getTracks().forEach(t=>t.stop());
+    });
+    recorder.addEventListener("stop",()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      if(!chunks.length)return;
+      videoURL=URL.createObjectURL(new Blob(chunks,{type:mime}));
+      video.src=videoURL;
+      video.load();
+
+      let settling=false;
+      const activate=()=>{
+        if(videoReady)return;
+        if(Number.isFinite(video.duration)&&video.duration>0){
+          videoDuration=Math.max(.1,video.duration-1/FPS);
+        }
+        videoReady=true;
+        if(!reducedMotion.matches)stage.classList.add("video-ready");
+        queueScroll();
+      };
+
+      video.addEventListener("loadeddata",()=>{
+        if(Number.isFinite(video.duration)){
+          activate();
+        }else{
+          // MediaRecorder WebM may initially omit duration metadata.
+          settling=true;
+          try{video.currentTime=1e8}catch(e){activate()}
+        }
+      },{once:true});
+
+      video.addEventListener("seeked",()=>{
+        if(settling){
+          settling=false;
+          activate();
+        }
+      });
+
+      // If the browser cannot seek the local recording, the generated
+      // 72-frame canvas sequence remains the visible scroll-scrub source.
+    },{once:true});
+
+    recorder.start();
+    for(let i=0;i<FRAME_COUNT;i++){
+      if(document.hidden){
+        await new Promise(resolve=>{
+          function resume(){
+            if(!document.hidden){
+              document.removeEventListener("visibilitychange",resume);
+              resolve();
+            }
+          }
+          document.addEventListener("visibilitychange",resume);
+        });
+      }
+      drawOrbit(sourceCtx,960,960,i/(FRAME_COUNT-1));
+      await new Promise(resolve=>setTimeout(resolve,1000/FPS));
+      if(recorder.state==="inactive")return;
+    }
+    if(recorder.state==="recording")recorder.stop();
+  }
+
+  // Let the initial page render before encoding the original scene.
+  window.addEventListener("pagehide",()=>{
+    if(videoURL)URL.revokeObjectURL(videoURL);
+  });
+
+  /* Real downloadable fit coupon. One closed cut path, five open slots. */
+  let thickness=3;
+  let kerf=.15;
+  const offsets=[-.10,-.05,0,.05,.10];
+  const coupon=document.getElementById("coupon-svg");
+  const thicknessOutput=document.getElementById("thickness-output");
+  const kerfOutput=document.getElementById("kerf-output");
+  const status=document.getElementById("download-status");
+
+  function number(n){return Number(n.toFixed(3))}
+  function offsetLabel(n){return n>0?"+"+n.toFixed(2):n===0?"0.00":"−"+Math.abs(n).toFixed(2)}
+
+  function couponPath(){
+    let d="M 0 0";
+    offsets.forEach((offset,i)=>{
+      const center=14+i*18;
+      const width=thickness-kerf+offset;
+      const left=number(center-width/2);
+      const right=number(center+width/2);
+      d+=` H ${left} V 16 H ${right} V 0`;
+    });
+    return d+" H 100 V 45 H 0 Z";
+  }
+
+  function updateCoupon(){
+    thicknessOutput.value=thickness+" mm";
+    kerfOutput.value=kerf.toFixed(2)+" mm";
+    coupon.innerHTML=`
+      <defs>
+        <pattern id="preview-grid" width="5" height="5" patternUnits="userSpaceOnUse">
+          <path d="M 5 0 H 0 V 5" fill="none" stroke="#809466" stroke-opacity=".1" stroke-width=".15"/>
+        </pattern>
+        <linearGradient id="coupon-fill" x2="0" y2="1">
+          <stop stop-color="#9eaa6e" stop-opacity=".28"/>
+          <stop offset="1" stop-color="#7d955a" stop-opacity=".1"/>
+        </linearGradient>
+      </defs>
+      <rect x="-5" y="-8" width="110" height="62" fill="url(#preview-grid)"/>
+      <path d="${couponPath()}" fill="url(#coupon-fill)" stroke="#c9e394" stroke-width=".35"/>
+      ${offsets.map((offset,i)=>`<text x="${14+i*18}" y="23" text-anchor="middle" fill="${i===2?"#e4fac0":"#a7ba91"}" font-size="2.8" font-family="Space Grotesk, sans-serif">${offsetLabel(offset)}</text>`).join("")}
+      <text x="5" y="36" fill="#d5e3bd" font-size="3.4" letter-spacing=".35" font-family="Space Grotesk, sans-serif">PLYFORM / FIT TEST</text>
+      <text x="5" y="41" fill="#8eaa7a" font-size="2.3" font-family="DM Sans, sans-serif">${thickness.toFixed(2)} MM SHEET / ${kerf.toFixed(2)} MM KERF</text>
+      <path d="M 0 -4 H 100 M 0 -5.5 V -2.5 M 100 -5.5 V -2.5" stroke="#728961" stroke-width=".2"/>
+      <text x="50" y="-5.3" text-anchor="middle" fill="#98ac86" font-size="2.5" font-family="DM Sans, sans-serif">100 mm</text>`;
+    status.textContent="Free test file / Millimeter units / No account";
+  }
+
+  document.querySelectorAll("[data-thickness]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      thickness=Number(button.dataset.thickness);
+      document.querySelectorAll("[data-thickness]").forEach(item=>{
+        item.setAttribute("aria-pressed",String(item===button));
+      });
+      updateCoupon();
+    });
+  });
+
+  document.getElementById("kerf").addEventListener("input",event=>{
+    kerf=Number(event.target.value);
+    updateCoupon();
+  });
+
+  document.getElementById("download-svg").addEventListener("click",()=>{
+    const svg=`<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="100mm" height="45mm" viewBox="0 0 100 45">
+  <title>PLYFORM five-slot fit test</title>
+  <desc>
+    Sheet thickness: ${thickness} mm. Estimated total kerf: ${kerf.toFixed(2)} mm.
+    Offsets, left to right: -0.10, -0.05, 0.00, +0.05, +0.10 mm.
+    Slot centerline widths equal sheet thickness minus kerf plus offset.
+    Red path: cut. Blue text: optional engraving, not cutting.
+    Import at 100 percent in millimeters.
+    Disable additional kerf or tool-offset compensation for this coupon.
+    The 100 by 45 mm dimensions describe the path envelope.
+    Convert text to paths if your laser software requires it.
+    Use suitable material, ventilation and machine settings.
+    This is a calibration test, not a guarantee of fit.
+  </desc>
+  <g id="CUT" fill="none" stroke="#ff0000" stroke-width="0.01">
+    <path d="${couponPath()}"/>
+  </g>
+  <g id="ENGRAVE_OPTIONAL" fill="#0000ff" font-family="sans-serif">
+    ${offsets.map((offset,i)=>`<text x="${14+i*18}" y="23" text-anchor="middle" font-size="2.8">${offset>0?"+":""}${offset.toFixed(2)}</text>`).join("\n    ")}
+    <text x="5" y="35" font-size="3">PLYFORM / FIT TEST</text>
+    <text x="5" y="41" font-size="2.5">${thickness.toFixed(2)} mm sheet / ${kerf.toFixed(2)} mm kerf</text>
+  </g>
+</svg>`;
+    const blob=new Blob([svg],{type:"image/svg+xml;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const anchor=document.createElement("a");
+    anchor.href=url;
+    anchor.download=`plyform-fit-${thickness}mm-kerf-${kerf.toFixed(2)}.svg`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+    status.textContent="SVG prepared / Red = cut / Blue = optional engrave / Import at 100%";
+  });
+  updateCoupon();
+
+  /* Honest, functional model previews rather than a simulated checkout. */
+  const modelData={
+    orbit:{
+      category:"01 / Lighting study",
+      title:"Orbit shade",
+      description:"Twenty-four curved ribs meet two circular collars. Rotate the assembly and the gaps change: open from one angle, almost solid from another.",
+      specs:[["Material study","3 mm birch plywood"],["Construction","24 ribs / 2 collars"],["Assembly idea","Radial slot fit"],["Status","Unvalidated concept"]],
+    },
+    span:{
+      category:"02 / Desk study",
+      title:"Span stand",
+      description:"An inclined reading surface rests on two shaped supports, with a low front lip to catch the pages. Four flat parts explore a compact, tool-free assembly.",
+      specs:[["Material study","6 mm birch plywood"],["Construction","4 interlocking parts"],["Use","Reading stand concept"],["Status","Unvalidated concept"]],
+    },
+    tide:{
+      category:"03 / Organization study",
+      title:"Tide tray",
+      description:"Stacked contours create a shallow tray with a small divider. The exposed plywood edges become the detail instead of something to hide.",
+      specs:[["Material study","4 mm birch plywood"],["Construction","Stacked perimeter layers"],["Assembly idea","Laminated layers"],["Status","Unvalidated concept"]],
+    }
+  };
+  const dialog=document.getElementById("model-dialog");
+  document.querySelectorAll("[data-model]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      const model=modelData[button.dataset.model];
+      document.getElementById("dialog-category").textContent=model.category;
+      document.getElementById("dialog-title").textContent=model.title;
+      document.getElementById("dialog-description").textContent=model.description;
+      document.getElementById("dialog-specs").innerHTML=model.specs.map(([label,value])=>`<div><dt>${label}</dt><dd>${value}</dd></div>`).join("");
+      dialog.showModal();
+    });
+  });
+  document.querySelector(".dialog-close").addEventListener("click",()=>dialog.close());
+  dialog.addEventListener("click",event=>{
+    const bounds=dialog.getBoundingClientRect();
+    if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)dialog.close();
+  });
+  document.getElementById("dialog-tool").addEventListener("click",()=>{
+    dialog.close();
+    document.getElementById("fit-tool").scrollIntoView({behavior:reducedMotion.matches?"instant":"smooth"});
+    document.getElementById("kerf").focus({preventScroll:true});
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  var header=document.querySelector('.header');
+  var trigger=document.querySelector('[data-mega-trigger]');
+  var scrim=document.querySelector('.nav-scrim');
+  function openMega(){header.classList.add('mega-open');trigger.setAttribute('aria-expanded','true');trigger.closest('.nav-item').classList.add('is-open');scrim.classList.add('show')}
+  function closeMega(){header.classList.remove('mega-open');trigger.setAttribute('aria-expanded','false');trigger.closest('.nav-item').classList.remove('is-open');scrim.classList.remove('show')}
+  if(trigger){
+    trigger.addEventListener('click',function(e){e.stopPropagation();header.classList.contains('mega-open')?closeMega():openMega()});
+    document.addEventListener('click',function(e){if(!header.contains(e.target))closeMega()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMega()});
+  }
+  var burger=document.querySelector('.header .burger'),drawer=document.querySelector('.drawer');
+  if(burger&&drawer){
+    var open=function(){drawer.classList.add('open');scrim.classList.add('show');burger.classList.add('open');burger.setAttribute('aria-expanded','true')};
+    var shut=function(){drawer.classList.remove('open');scrim.classList.remove('show');burger.classList.remove('open');burger.setAttribute('aria-expanded','false')};
+    burger.addEventListener('click',function(){drawer.classList.contains('open')?shut():open()});
+    var dc=drawer.querySelector('.drawer-close');if(dc)dc.addEventListener('click',shut);
+    drawer.addEventListener('click',function(e){if(e.target.closest('a'))shut()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')shut()});
+  }
+  var last=0;
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY||document.documentElement.scrollTop;
+    if(y>last&&y>140){header.classList.add('hide-on-scroll')}else{header.classList.remove('hide-on-scroll')}
+    last=y;
+  },{passive:true});
+})();
+</script>
+<script data-switcher-drag>(function(){var sw=document.querySelectorAll('.switcher');sw.forEach(function(el){var down=false,sx=0,sl=0,moved=false;el.addEventListener('pointerdown',function(e){if(e.button!==0||e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=el.scrollLeft;});window.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-sx;if(Math.abs(dx)>5){moved=true;el.scrollLeft=sl-dx;}});function up(){down=false;}window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);el.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);});})();</script></body>
+</html>

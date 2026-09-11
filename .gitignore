@@ -1,0 +1,6 @@
+# junk / build artifacts
+.hallmark/
+твлй.html
+
+# keep _data.json as source reference
+!_data.json
