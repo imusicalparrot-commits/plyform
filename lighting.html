@@ -8,7 +8,15 @@
 <script>
 (function(){
   var header=document.querySelector('.site-header');
-  var burger=document.querySelector('.header .burger'),drawer=document.querySelector('.drawer');
+  var trigger=document.querySelector('[data-mega-trigger]');
+  function openMega(){header.classList.add('mega-open');if(trigger){trigger.setAttribute('aria-expanded','true');if(trigger.closest('.nav-item'))trigger.closest('.nav-item').classList.add('is-open')}if(scrim)scrim.classList.add('show')}
+  function closeMega(){header.classList.remove('mega-open');if(trigger){trigger.setAttribute('aria-expanded','false');if(trigger.closest('.nav-item'))trigger.closest('.nav-item').classList.remove('is-open')}if(scrim)scrim.classList.remove('show')}
+  if(trigger){
+    trigger.addEventListener('click',function(e){e.stopPropagation();header.classList.contains('mega-open')?closeMega():openMega()});
+    document.addEventListener('click',function(e){if(!header.contains(e.target))closeMega()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMega()});
+  }
+  var burger=document.querySelector('.site-header .burger'),drawer=document.querySelector('.drawer');
   var scrim=document.querySelector('.nav-scrim');
   if(burger&&drawer){
     var open=function(){drawer.classList.add('open');burger.classList.add('open');burger.setAttribute('aria-expanded','true');if(scrim)scrim.classList.add('show')};
