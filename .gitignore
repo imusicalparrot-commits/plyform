@@ -1,6 +1,6 @@
-# junk / build artifacts
+# Local source catalogs and editing workspace are not deployment files.
+/PLYFORM SEO/
+/PLYFORM до бана по спаму/
+/PLYFORM послле спама/
 .hallmark/
 твлй.html
-
-# keep _data.json as source reference
-!_data.json
